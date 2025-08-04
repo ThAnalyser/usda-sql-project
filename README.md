@@ -65,7 +65,7 @@ The project includes the following datasets:
 
 **Hanzala Raja**  
 Data Analyst | SQL Enthusiast | Open to Opportunities  
-🔗 [Connect with me on LinkedIn](https://www.linkedin.com)
+🔗 [Connect with me on LinkedIn](https://www.linkedin.com/in/hanzalaraja/)
 
 ---
 

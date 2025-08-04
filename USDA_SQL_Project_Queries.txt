@@ -1,0 +1,93 @@
+
+USDA SQL Project – Cleaned Queries
+----------------------------------
+
+🧀 CHEESE PRODUCTION ANALYSIS
+1. States with Cheese Production > 100M in April 2023
+-----------------------------------------------------
+SELECT 
+    s.State_ANSI, s.State, SUM(c.Value) AS Cheese_Production
+FROM 
+    cheese_production AS c
+JOIN 
+    state_lookup AS s ON c.State_ANSI = s.State_ANSI
+WHERE 
+    c.year = 2023 AND c.Period = 'APR'
+GROUP BY 
+    s.State_ANSI, s.State
+HAVING 
+    SUM(c.Value) > 100000000;
+
+
+🥛 MILK PRODUCTION ANALYSIS
+2. Total Milk Production for the Year 2023
+------------------------------------------
+SELECT 
+    SUM(value) AS Total_Milk_Production_2023
+FROM 
+    milk_production
+WHERE 
+    year = 2023;
+
+
+☕ COFFEE PRODUCTION TRENDS
+3. Total Coffee Production for the Year 2011
+--------------------------------------------
+SELECT 
+    SUM(value) AS Coffee_Production_2011
+FROM 
+    coffee_production
+WHERE 
+    year = 2011;
+
+4. Coffee Production Trends Over the Years
+------------------------------------------
+SELECT 
+    year, SUM(value) AS Total_Production
+FROM 
+    coffee_production
+GROUP BY 
+    year
+ORDER BY 
+    year;
+
+
+🍯 HONEY PRODUCTION INSIGHT
+5. Average Honey Production in 2022
+-----------------------------------
+SELECT 
+    ROUND(AVG(value), 2) AS Avg_Honey_Production_2022
+FROM 
+    honey_production
+WHERE 
+    year = 2022;
+
+
+🥣 CROSS-COMMODITY ANALYSIS
+6. Yogurt Production in 2022 for States with Cheese Data in 2023
+----------------------------------------------------------------
+SELECT 
+    SUM(y.value) AS Total_Yogurt_Production
+FROM 
+    yogurt_production y
+WHERE 
+    y.year = 2022
+    AND y.State_ANSI IN (
+        SELECT DISTINCT c.State_ANSI
+        FROM cheese_production c
+        WHERE c.year = 2023
+    );
+
+
+🌍 ALL STATES – CHEESE PRODUCTION
+7. List All States with Cheese Production in April 2023 (Including 0)
+---------------------------------------------------------------------
+SELECT 
+    s.State, COALESCE(SUM(c.value), 0) AS Cheese_Production
+FROM 
+    state_lookup s
+LEFT JOIN 
+    cheese_production c ON c.State_ANSI = s.State_ANSI
+    AND c.year = 2023 AND c.Period = 'APR'
+GROUP BY 
+    s.State;
